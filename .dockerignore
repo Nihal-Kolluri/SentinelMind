@@ -1,0 +1,36 @@
+# Version Control
+.git/
+.gitignore
+
+# Python Environments & Caches
+.venv/
+venv/
+ENV/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Tools & Temporary Files
+.tools/
+scratch/
+*.zip
+*.log
+
+# Web Dependencies & Build Artifacts (Built cleanly inside Docker stage 1)
+web/node_modules/
+web/dist/
+web/.vite/
+
+# Secret Environment Files (passed at runtime via docker-compose / --env-file)
+.env
+.env.local
+
+# IDE & Editor Settings
+.vscode/
+.idea/
+*.swp
+*.swo

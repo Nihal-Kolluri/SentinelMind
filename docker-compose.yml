@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  sentinelmind:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelmind-app
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+    volumes:
+      # Persist SQLite databases and incident run postmortems
+      - ./runs:/app/runs
+      - ./sentinelmind.sqlite3:/app/sentinelmind.sqlite3
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 20s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
