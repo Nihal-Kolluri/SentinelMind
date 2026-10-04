@@ -206,8 +206,20 @@ SentinelMind separates operational actions and cognitive traces into four focuse
 
 SentinelMind supports testing arbitrary, user-supplied production alerts, error logs, and stack traces:
 - Click **+ Ingest Custom Data** in the header or incident feed.
-- Choose from 5 pre-configured templates (e.g. *Stripe Webhook Timeout*, *Redis Memory Maxed*, *Kafka Lag Spike*, *Kubernetes CrashLoopBackOff*, *JWT Signature Rotation Failure*) or paste raw logs and stack traces.
+- Choose from pre-configured templates (e.g. *Database Pool Exhaustion*, *Redis Cache Stampede*, *Worker Memory Leak*, *Downstream Rate Limit / 429 Surge*, *Financial Ledger Deadlock*, *Docker Container OOMKilled*) or paste raw telemetry logs.
 - The system automatically extracts service name, severity, symptoms, and anomaly signals, runs multi-agent diagnosis via LLM or deterministic fallback, and recalls matching historical memories from Hindsight.
+- **Persistence Across Sessions**: All dynamic scenarios and analysis runs are permanently persisted into SQLite (`custom_scenarios` and `runs` tables).
+
+---
+
+## Persistent Incident History & Audit Trail
+
+SentinelMind provides a dedicated **Incident History** dashboard:
+- **Aggregate KPI Stat Cards**: Total Runs Recorded, Time Saved % (Warm vs Cold), Baseline Cold Runs count, and Dynamic Ingested Analyses.
+- **Live Search & Filter**: Real-time filtering by Incident ID, service, root cause, status (`ALL`, `WITH MEMORY`, `BASELINE (COLD)`, `RESOLVED`, `ESCALATED`, `DYNAMIC`).
+- **Interactive Run Inspection**: Expand any run row to view full Root Cause Analysis, evaluated actionable recommendations with risk levels, and memory correlation breakdown.
+- **Inspect in War Room**: One-click action to load any historical run directly into the 7-agent Live War Room.
+- **Audit Export**: Export filtered run histories to JSON with a single click.
 
 ---
 
@@ -244,6 +256,7 @@ To see memory in action in under a minute:
 - `GET /api/incidents`: Lists all scenarios with status and metrics.
 - `GET /api/incidents/{id}`: Scenario telemetry, deploy history, and run state.
 - `GET /api/incidents/{id}/stream`: Server-Sent Events (SSE) live updates.
+- `GET /api/history`: Returns historical incident run checkpoints and audit logs with optional filters.
 - `POST /api/incidents/custom`: Ingests and registers dynamic incident telemetry.
 - `POST /api/incidents/analyze`: Analyzes raw stack traces, logs, or error text with multi-agent pipeline.
 - `GET /api/memory/playbooks`: Synthesized Hindsight playbooks per root cause.
@@ -252,4 +265,5 @@ To see memory in action in under a minute:
 - `POST /api/demo/reset`: Generates a fresh unique Hindsight bank.
 - `POST /api/demo/seed`: Pre-seeds baseline data for immediate presentation.
 - `POST /api/kill`: Emergency kill switch stopping active runs.
+
 
